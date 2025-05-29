@@ -1,10 +1,20 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import ContactPage from "./pages/ContactPage";
+import WebDesignPage from "./pages/Web_design";
+import AISolutionPage from "./pages/AI_Solution";
+
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-blue-600">
-        Welcome to React with Tailwind CSS!
-      </h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/ai_solutions" element={<AISolutionPage />} />
+        <Route path="/web_design" element={<WebDesignPage />} />
+      </Routes>
+    </Router>
   );
 }
 
