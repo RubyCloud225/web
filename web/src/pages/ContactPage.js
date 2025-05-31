@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import * as THREE from "three";
+import { createRenderer } from "../utils/threeRenderer";
 import { Link } from "react-router-dom";
 
 export default function ContactPage() {
   const containerRef = useRef(null);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,8 +29,7 @@ export default function ContactPage() {
       0.1,
       1000
     );
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderer = createRenderer();
     const mount = document.getElementById("three-container");
     mount.appendChild(renderer.domElement);
 
@@ -110,7 +115,14 @@ export default function ContactPage() {
         className={`fixed top-0 left-0 w-full z-20 px-8 py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? "bg-white/90 shadow-md" : "bg-white/60"} backdrop-blur-md`}
       >
         <div className="text-xl font-bold text-slate-800">Curat-ify</div>
-        <div className="space-x-4">
+        <div className="md:hidden">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="focus:outline-none">
+            <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            </svg>
+          </button>
+        </div>
+        <div className={`md:flex space-x-4 ${menuOpen ? "flex flex-col absolute top-20 left-0 w-full bg-white/90 p-4" : "hidden"} md:static md:flex-row md:bg-transparent md:p-0`}>
           <Link to="/" className="bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-block">Home</Link>
           <Link to="/ai_solutions" className="bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-block">AI Solutions</Link>
           <Link to="/web_design" className="bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-block">Web Design</Link>
@@ -129,14 +141,45 @@ export default function ContactPage() {
           </br>
           <span className="text-blue-600">Start your journey today</span>
         </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="text-lg md:text-xl mb-6"
-        >
-          
-        </motion.p>
+        <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-10 bg-white/80 backdrop-blur-md rounded-x1 shadow-lg p-8 w-full max-w-lg mx-auto">
+          <form 
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = {
+              name,
+              email,
+              message,
+            };
+            try {
+              const res = await fetch("https://localhost:5000/api/contact", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+              });
+              if (res.ok) {
+                alert("Message sent Successfully!");
+                setName('');
+                setEmail('');
+                setMessage('');
+              } else {
+                alert("Failed to send Successfully!");
+              }
+            } catch (err) {
+              console.error(err);
+              alert("Something went wrong")
+            }
+          }}className="flex flex-col space-y-4">
+            <input type="text" placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} className="px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input type="email" placeholder="Your Email" value={email} onChange={(e) => setEmail(e.target.value)} className="px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            <textarea placeholder="Your Message" rows="5" value={message} onChange={(e) => setMessage(e.target.value)} className="px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            <button type="submit" className="bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition">Send Message</button>
+          </form>
+        </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -147,6 +190,18 @@ export default function ContactPage() {
             Schedule a Call
           </button>
         </motion.div>
+        <footer className="fixed bottom-0 left-0 w-full z-10 bg-white/80 backdrop-blur-md text-slate-700 text-xs px-4 py-2 shadow-t border-t border-gray-200 flex flex-wrap justify-between items-center">
+          <div className="w-full flex flex-wrap justify-between items-center text-center sm:text-left">
+            <div className="font-semibold text-sm">© {new Date().getFullYear()} Curat-ify</div>
+            <div className="flex space-x-4 text-xs">
+              <Link to="/" className="hover:underline">Home</Link>
+              <Link to="/ai_solutions" className="hover:underline">AI</Link>
+              <Link to="/web_design" className="hover:underline">Design</Link>
+              <Link to="/contact" className="hover:underline">Contact</Link>
+            </div>
+            <div className="text-[10px] text-gray-500 mt-1 sm:mt-0">Curatify Consultants Ltd, 3rd Floor 45 Albemarle Street, London W1S 4JL</div>
+          </div>
+        </footer>
       </div>
     </div>
   );

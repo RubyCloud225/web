@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import * as THREE from "three";
+import { createRenderer } from "../utils/threeRenderer";
 import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const containerRef = useRef(null);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,8 +25,7 @@ export default function HomePage() {
       0.1,
       1000
     );
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderer = createRenderer();
     const mount = document.getElementById("three-container");
     mount.appendChild(renderer.domElement);
 
@@ -110,7 +111,14 @@ export default function HomePage() {
         className={`fixed top-0 left-0 w-full z-20 px-8 py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? "bg-white/90 shadow-md" : "bg-white/60"} backdrop-blur-md`}
       >
         <div className="text-xl font-bold text-slate-800">Curat-ify</div>
-        <div className="space-x-4">
+        <div className="md:hidden">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="focus:outline-none">
+            <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            </svg>
+          </button>
+        </div>
+        <div className={`md:flex space-x-4 ${menuOpen ? "flex flex-col absolute top-20 left-0 w-full bg-white/90 p-4" : "hidden"} md:static md:flex-row md:bg-transparent md:p-0`}>
           <Link to="/" className="bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-block">Home</Link>
           <Link to="/ai_solutions" className="bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-block">AI Solutions</Link>
           <Link to="/web_design" className="bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-block">Web Design</Link>
@@ -146,7 +154,20 @@ export default function HomePage() {
             Schedule a Call
           </button>
         </motion.div>
+        <footer className="fixed bottom-0 left-0 w-full z-10 bg-white/80 backdrop-blur-md text-slate-700 text-xs px-4 py-2 shadow-t border-t border-gray-200 flex flex-wrap justify-between items-center">
+          <div className="w-full flex flex-wrap justify-between items-center text-center sm:text-left">
+            <div className="font-semibold text-sm">© {new Date().getFullYear()} Curat-ify</div>
+            <div className="flex space-x-4 text-xs">
+              <Link to="/" className="hover:underline">Home</Link>
+              <Link to="/ai_solutions" className="hover:underline">AI</Link>
+              <Link to="/web_design" className="hover:underline">Design</Link>
+              <Link to="/contact" className="hover:underline">Contact</Link>
+            </div>
+            <div className="text-[10px] text-gray-500 mt-1 sm:mt-0">Curatify Consultants Ltd, 3rd Floor 45 Albemarle Street, London W1S 4JL</div>
+          </div>
+        </footer>
       </div>
+      
     </div>
   );
 }
