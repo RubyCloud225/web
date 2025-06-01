@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import HomePage from './HomePage';
+import HomePage from '../pages/HomePage';
 
 jest.mock('three');
 import { MemoryRouter } from 'react-router-dom';

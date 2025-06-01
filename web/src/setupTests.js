@@ -2,6 +2,10 @@ import '@testing-library/jest-dom';
 
 global.alert = jest.fn();
 
+jest.mock('react-helmet', () => ({
+  Helmet: () => null,
+}));
+
 jest.mock('three', () => {
   class BufferGeometry {
     constructor() {
@@ -66,5 +70,17 @@ jest.mock('three', () => {
     Points: Points,
     LineBasicMaterial: LineBasicMaterial,
     LineSegments: LineSegments,
+  };
+});
+
+jest.mock('../components/SEO', () => {
+  return {
+    SEO: () => null,
+  };
+});
+
+jest.mock('../config', () => {
+  return {
+    DOMAIN: 'http://localhost',
   };
 });

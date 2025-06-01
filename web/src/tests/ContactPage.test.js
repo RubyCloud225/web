@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ContactPage from './ContactPage';
+import ContactPage from '../pages/ContactPage';
 
 jest.mock('three');
 import { MemoryRouter } from 'react-router-dom';

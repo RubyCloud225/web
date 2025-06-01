@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import * as THREE from "three";
 import { createRenderer } from "../utils/threeRenderer";
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 
 export default function AISolutionPage() {
   const containerRef = useRef(null);
@@ -103,6 +104,21 @@ export default function AISolutionPage() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-white">
+      <SEO
+        title="AI Solutions | Curat-ify"
+        description="We build custom AI solutions to optimize business operations and improve customer experiences."
+        canonical={`${DOMAIN}/ai_solutions`}
+        url={`${DOMAIN}/ai_solutions`}
+        image={`${DOMAIN}/assets/ai-og-image.png`}
+        twitterHandle="@curatifyai"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "AI Solutions",
+          "description": "We build custom AI solutions to optimize business operations and improve customer experiences.",
+          "url": `${DOMAIN}/ai_solutions`
+        }}
+      />
       <div id="three-container" className="absolute inset-0 z-0" />
       <motion.nav
         initial={{ y: -60, opacity: 0 }}

@@ -1,18 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WebDesignPage from './Web_design';
+import AISolutionPage from '../pages/AI_Solution';
 
 jest.mock('three');
 import { MemoryRouter } from 'react-router-dom';
 
-
-describe('WebDesignPage', () => {
+describe('AISolutionPage', () => {
   test('renders main heading and buttons', () => {
     render(
-    <MemoryRouter>
-      <WebDesignPage />
-      </MemoryRouter>);
-    expect(screen.getByText(/We design cutting edge landing page to suit your brand/i)).toBeInTheDocument();
+      <MemoryRouter>
+        <AISolutionPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/We build AI Solutions that transform your business/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /View Portfolio/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Schedule a Call/i })).toBeInTheDocument();
   });

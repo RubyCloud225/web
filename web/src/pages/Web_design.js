@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import * as THREE from "three";
 import { createRenderer } from "../utils/threeRenderer";
 import { Link } from "react-router-dom";
+import { DOMAIN } from "../config";
+import SEO from "../components/SEO";
 
 export default function WebDesignPage() {
   const containerRef = useRef(null);
@@ -103,6 +105,21 @@ export default function WebDesignPage() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-white">
+      <SEO
+        title="Web Design | Curat-ify"
+        description="Innovative and intelligent web designs tailored to your brand, optimized for performance and user engagement."
+        canonical={`${DOMAIN}/web_design`}
+        url={`${DOMAIN}/web_design`}
+        image={`${DOMAIN}/assets/web-design-og-image.png`}
+        twitterHandle="@curatifyai"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Web Design",
+          "description": "Innovative and intelligent web designs tailored to your brand.",
+          "url": `${DOMAIN}/web_design`
+        }}
+      />
       <div id="three-container" className="absolute inset-0 z-0" />
       <motion.nav
         initial={{ y: -60, opacity: 0 }}

@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import * as THREE from "three";
 import { createRenderer } from "../utils/threeRenderer";
 import { Link } from "react-router-dom";
+import { DOMAIN } from "../config";
+import SEO from "../components/SEO";
 
 export default function HomePage() {
   const containerRef = useRef(null);
@@ -103,6 +105,21 @@ export default function HomePage() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-white">
+      <SEO
+        title="HomePage | Curat-ify"
+        description="Innovative and intelligent web designs tailored to your brand, optimized for performance and user engagement."
+        canonical={`${DOMAIN}/Curat-ify HomePage`}
+        url={`${DOMAIN}/home`}
+        image={`${DOMAIN}/assets/home-og-image.png`}
+        twitterHandle="@curatifyai"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "HomePage",
+          "description": "Innovative and intelligent web designs tailored to your brand, optimized for performance and user engagement.",
+          "url": `${DOMAIN}/web_design`
+        }}
+      />
       <div id="three-container" className="absolute inset-0 z-0" />
       <motion.nav
         initial={{ y: -60, opacity: 0 }}
